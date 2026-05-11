@@ -1,0 +1,57 @@
+Real Production Uses
+
+Two Sum concepts appear in:
+
+Fraud detection
+Banking transaction reconciliation
+Pair matching engines
+Recommendation systems
+Trading systems
+Memory caching problems
+
+Pattern Recognition :-
+
+Scenario	        Technique
+Unsorted array	    HashMap
+Sorted array	    Two Pointer
+Need all pairs	    HashSet
+Need unique pairs	Set + sorting
+Streaming data	    HashMap frequency
+Closest sum	        Sorting + Two Pointer
+KSum problems	    Recursion + Two Sum
+
+Most Important Interview Insight
+
+Two Sum teaches:
+
+complement technique
+hashing
+two pointer strategy
+frequency counting
+pair problems
+foundation of KSum family
+
+This is why it is one of the most important DSA patterns.
+
+The pattern is:
+
+2Sum → two pointers or hashmap
+3Sum → fix one number, then solve 2Sum on the rest of the array
+4Sum → fix two numbers, then solve 2Sum
+KSum → recursively fix numbers until k == 2
+
+Easy Pattern to Remember
+2Sum  -> two pointers
+3Sum  -> fix 1, solve 2Sum
+4Sum  -> fix 2, solve 2Sum
+KSum  -> fix one recursively, base case is 2Sum
+
+Why duplicate skipping is needed at every level
+
+Imagine the array contains repeated values like 0, 0.
+
+At a given recursion level, if you choose the first 0 and then again choose the second 0 as the first number at that same level, you may generate the same combinations twice.
+
+So at every recursive level, you skip duplicates among siblings in the same loop.
+
+That is exactly what this check does.
