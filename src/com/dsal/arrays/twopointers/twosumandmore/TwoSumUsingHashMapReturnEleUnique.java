@@ -1,6 +1,9 @@
-package com.dsal.leetcode.blind75.arrays.twopointers.twosumandmore;
+package com.dsal.arrays.twopointers.twosumandmore;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class TwoSumUsingHashMapReturnEleUnique {
 

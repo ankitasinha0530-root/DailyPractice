@@ -1,8 +1,8 @@
-package com.dsal.leetcode.blind75.arrays.twopointers.twosumandmore;
+package com.dsal.arrays.twopointers.twosumandmore;
 
 import java.util.Arrays;
 
-public class TwoSumUsingTwoPointers {
+public class TwoSumUsingTwoPointersReturnEle {
 
 /**
  You may assume that each input would have exactly one solution, and you may not use the same element twice.
@@ -23,23 +23,20 @@ public class TwoSumUsingTwoPointers {
     private static int[] findIndexsOfTargetSumEle(int[] nums, int target) {
 
         int i = 0;
-        int j = nums.length-1;
+        int j = nums.length - 1;
 
-    //    make sure the Array is sorted to use 2 pointers
-
-        while( i < j){
-
+        while(i < j){
             int sum = nums[i] + nums[j];
 
             if(sum == target){
-                return new int[]{i, j};
-            } else if (sum < target) {
+                return new int[]{nums[i], nums[j]};
+            }else if(sum < target ){
                 i++;
-            }else {
+            }else{
                 j--;
             }
         }
 
-        return new int[0];
+        return new int[]{0, 0};
     }
 }

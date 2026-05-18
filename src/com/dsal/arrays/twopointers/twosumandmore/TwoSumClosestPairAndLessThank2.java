@@ -1,4 +1,4 @@
-package com.dsal.leetcode.blind75.arrays.twopointers.twosumandmore;
+package com.dsal.arrays.twopointers.twosumandmore;
 
 import java.util.Arrays;
 

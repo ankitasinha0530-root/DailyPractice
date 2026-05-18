@@ -1,8 +1,10 @@
-package com.dsal.leetcode.blind75.arrays.twopointers.twosumandmore;
+package com.dsal.arrays.twopointers.twosumandmore;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-public class TwoSumUsingHashMapReturnEle {
+public class TwoSumUsingHashMap {
 
 /**
  You may assume that each input would have exactly one solution, and you may not use the same element twice.
@@ -22,15 +24,15 @@ public class TwoSumUsingHashMapReturnEle {
 
     private static int[] twoSumUsingHashMap(int[] nums, int target) {
         // if the elements are not sorted and we don;t want to sort it
-
-        Set<Integer> seen = new HashSet<>();
+        Map<Integer, Integer> map = new HashMap<>();
 
         for (int i = 0; i < nums.length; i++) {
-            int complement = target - nums[i];
-            if(seen.contains(complement)){
-                return new int[]{complement, nums[i]};
+            int valueNeeded = target - nums[i];
+            if(map.containsKey(valueNeeded)){
+                return new int[]{map.get(valueNeeded), i};
             }
-            seen.add(nums[i]);
+            map.put(nums[i], i);
+
         }
 
         return new int[0];
