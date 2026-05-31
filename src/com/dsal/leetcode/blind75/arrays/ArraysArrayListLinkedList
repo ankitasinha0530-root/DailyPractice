@@ -1,0 +1,664 @@
+
+Complete Theory: Array vs ArrayList vs LinkedList in Java
+1. ARRAY
+int[] arr = new int[5];
+
+Array is the most basic data structure.
+
+It stores elements in contiguous memory locations.
+
+Internal Working
+
+Suppose:
+
+int[] arr = {10,20,30,40};
+
+Memory:
+
+Index:   0    1    2    3
+Value:  10   20   30   40
+
+Internally memory looks continuous:
+
+1000 -> 10
+1004 -> 20
+1008 -> 30
+1012 -> 40
+
+Each integer occupies 4 bytes.
+
+Why Array Access is O(1)
+
+Formula:
+
+Address=Base+(index×sizeOfElement)
+
+Example:
+
+To access index 3:
+
+1000+(3×4)=1012
+
+Direct jump happens.
+
+No traversal needed.
+
+That’s why:
+
+arr[3]
+
+is O(1).
+
+Characteristics
+Feature	Array
+Size	Fixed
+Memory	Contiguous
+Access	Very Fast
+Dynamic Resize	❌
+Primitive Support	✅
+Thread Safe	❌
+Advantages
+✅ Extremely fast random access
+arr[i]
+
+O(1)
+
+✅ Lowest memory usage
+
+Only actual data stored.
+
+No extra objects/pointers.
+
+✅ CPU cache friendly
+
+Continuous memory improves performance.
+
+✅ Supports primitives directly
+int[]
+char[]
+double[]
+
+No boxing/unboxing.
+
+Disadvantages
+❌ Fixed size
+
+Cannot grow dynamically.
+
+❌ Insertion/deletion expensive
+
+Need shifting.
+
+Example:
+
+[10,20,30,40]
+
+Insert 15 at index 1
+
+[10,15,20,30,40]
+
+Everything shifts right.
+
+Time = O(n)
+
+When to Use
+
+✅ DP
+✅ Matrix
+✅ Frequency count
+✅ Performance-critical code
+
+2. ARRAYLIST
+ArrayList<Integer> list = new ArrayList<>();
+Internal Working
+
+ArrayList internally uses:
+
+Object[] elementData;
+
+Meaning:
+
+internally it is STILL an array.
+Default Capacity
+
+Java creates:
+
+capacity = 10
+
+initially (when first element added).
+
+Size vs Capacity
+Size
+
+Actual elements count.
+
+list.size()
+Capacity
+
+Internal array size.
+
+Example:
+
+Capacity = 10
+Size = 3
+
+means:
+
+array can hold 10 elements
+only 3 currently present
+Resizing Mechanism
+
+When array becomes full:
+
+Java creates bigger array.
+
+Growth formula:
+
+newCapacity = oldCapacity + oldCapacity/2
+
+Approximately:
+
+1.5x growth
+Example
+
+Capacity:
+
+10 → 15 → 22 → 33 → 49
+Why add() is Amortized O(1)
+
+Most inserts:
+
+list.add(x)
+
+simply append.
+
+O(1)
+
+BUT occasionally:
+
+new array created
+all elements copied
+
+That resize step is O(n).
+
+Since resizing happens rarely:
+Average = Amortized O(1)
+
+Characteristics
+Feature	ArrayList
+Internal Structure	Dynamic Array
+Random Access	Fast
+Dynamic Size	✅
+Thread Safe	❌
+Allows Duplicates	✅
+Maintains Order	✅
+Advantages
+✅ Dynamic resizing
+
+No fixed size issue.
+
+✅ Fast random access
+
+Internally array-based.
+
+O(1)
+
+✅ Rich API
+add()
+remove()
+contains()
+sort()
+✅ Better practical performance than LinkedList
+
+Due to cache locality.
+
+Disadvantages
+❌ Insert/delete in middle costly
+
+Requires shifting.
+
+O(n)
+
+❌ Boxing overhead
+ArrayList<Integer>
+
+stores Integer objects.
+
+Not primitive int.
+
+❌ Resize operation costly occasionally
+
+Copies entire array.
+
+ArrayList Capacity Tuning
+
+You can optimize:
+
+new ArrayList<>(1000);
+
+Avoids multiple resizes.
+
+Very important in performance systems.
+
+LOAD FACTOR?
+
+❌ ArrayList DOES NOT HAVE LOAD FACTOR.
+
+This is HashMap concept.
+
+People often confuse:
+
+capacity growth
+with
+load factor
+
+Different things.
+
+3. LINKEDLIST
+LinkedList<Integer> list = new LinkedList<>();
+Internal Structure
+
+Java uses:
+
+Doubly Linked List
+
+Each node:
+
+class Node {
+    E item;
+    Node next;
+    Node prev;
+}
+Memory Representation
+[10 | * ] -> [20 | * ] -> [30 | * ]
+
+Each node stores:
+
+data
+next pointer
+prev pointer
+Characteristics
+Feature	LinkedList
+Internal Structure	Doubly Linked Nodes
+Random Access	Slow
+Dynamic Size	✅
+Memory Usage	High
+Queue Operations	Excellent
+Advantages
+✅ Fast insertion/deletion
+
+No shifting needed.
+
+Pointer updates only.
+
+✅ Excellent for Queue/Deque
+addFirst()
+removeFirst()
+
+O(1)
+
+✅ No resizing needed
+
+Nodes allocated dynamically.
+
+Disadvantages
+❌ Random access very slow
+list.get(1000)
+
+Needs traversal.
+
+O(n)
+
+❌ High memory usage
+
+Extra pointers in every node.
+
+❌ Poor cache performance
+
+Nodes scattered in memory.
+
+CPU cache inefficient.
+
+Why LinkedList is Rarely Used in Real Systems
+
+Theoretical:
+
+Insertion = O(1)
+
+BUT practical reality:
+
+Finding node itself costs:
+
+O(n)
+
+Modern CPUs favor arrays heavily.
+
+Thus ArrayList often beats LinkedList even in insertions.
+
+Full Complexity Table
+Operation	Array	ArrayList	LinkedList
+Access	O(1)	O(1)	O(n)
+Search	O(n)	O(n)	O(n)
+Insert End	O(1)*	O(1) amortized	O(1)
+Insert Middle	O(n)	O(n)	O(1)**
+Delete Middle	O(n)	O(n)	O(1)**
+Memory	Low	Medium	High
+
+* if space available
+** if node reference already known
+
+Real Interview Insight
+Why ArrayList beats LinkedList practically
+
+Because of:
+
+CPU Cache Locality
+
+Array memory:
+
+1000 1004 1008 1012
+
+CPU fetches nearby memory together.
+
+Very fast.
+
+LinkedList memory:
+
+1000 -> 7000 -> 3000 -> 9000
+
+Memory scattered.
+
+Lots of cache misses.
+
+Huge slowdown.
+
+Important Segregation
+Use ARRAY when:
+
+✅ Size fixed
+✅ Max performance needed
+✅ Heavy indexing
+
+Examples:
+
+Matrix
+Graph adjacency matrix
+DP
+Use ARRAYLIST when:
+
+✅ Dynamic size
+✅ Frequent reads/access
+✅ General-purpose list
+
+Examples:
+
+Most enterprise apps
+APIs
+LeetCode
+Use LINKEDLIST when:
+
+✅ Frequent head/tail operations
+✅ Queue/deque implementations
+✅ Continuous insert/remove at ends
+
+Examples:
+
+Browser history
+Undo/redo
+LRU internals
+Final Interview Summary
+ARRAY
+
+Fastest + fixed size
+
+ARRAYLIST
+
+Most practical + dynamic + fast access
+
+LINKEDLIST
+
+Good for structural modifications but poor cache performance makes it less common today
+
+1. Array (int[], String[])
+Advantages over ArrayList
+✅ Faster
+Arrays store elements directly in continuous memory.
+No extra wrapper methods or resizing overhead.
+Slightly better performance.
+int[] arr = new int[5];
+✅ Less memory usage
+No extra capacity handling.
+No internal resizing logic.
+✅ Can store primitives directly
+int[] arr = {1,2,3};
+
+But ArrayList<int> is NOT allowed.
+
+You must use:
+
+ArrayList<Integer>
+
+which causes boxing/unboxing overhead.
+
+Advantages over LinkedList
+✅ O(1) random access
+
+Accessing index is instant.
+
+arr[4]
+
+Because memory is contiguous.
+
+✅ Better cache performance
+
+CPU cache works efficiently with arrays.
+
+✅ Less memory
+
+LinkedList stores:
+
+data
+next pointer
+previous pointer
+
+Array stores only data.
+
+Disadvantages
+❌ Fixed size
+
+Cannot grow dynamically.
+
+int[] arr = new int[5];
+
+Size is fixed forever.
+
+❌ Insertion/deletion costly
+
+Need shifting.
+
+[1,2,3,4]
+insert at index 1
+
+=> [1,x,2,3,4]
+
+Shifting required.
+
+Time:
+
+O(n)
+2. ArrayList
+
+Internally uses a dynamic array.
+
+ArrayList<Integer> list = new ArrayList<>();
+Advantages over Array
+✅ Dynamic resizing
+
+Can grow automatically.
+
+list.add(10);
+
+No need to know size beforehand.
+
+✅ Rich built-in methods
+add()
+remove()
+contains()
+sort()
+✅ Easier to use
+
+No manual resizing logic.
+
+Advantages over LinkedList
+✅ Faster random access
+list.get(i)
+
+Time:
+
+O(1)
+
+Because internally it's an array.
+
+✅ Better iteration performance
+
+Due to contiguous memory.
+
+✅ Less memory than LinkedList
+
+No node pointers.
+
+Disadvantages
+❌ Insert/delete in middle is costly
+
+Shifting required.
+
+Time:
+
+O(n)
+❌ Resizing occasionally expensive
+
+When capacity is full:
+
+new bigger array created
+all elements copied
+3. LinkedList
+
+Implemented using doubly linked nodes.
+
+Each node contains:
+
+data
+next pointer
+prev pointer
+Advantages over Array
+✅ Dynamic size
+
+No fixed size problem.
+
+✅ Fast insertion/deletion at beginning or middle
+
+No shifting.
+
+Just pointer updates.
+
+A -> B -> C
+
+Insert X after A
+
+A -> X -> B -> C
+
+Time:
+
+O(1) IF node already known
+Advantages over ArrayList
+✅ Faster insertion/deletion at head/tail
+
+Especially queue/deque operations.
+
+addFirst()
+removeFirst()
+✅ No resizing overhead
+
+Nodes created dynamically.
+
+Disadvantages
+❌ Slow random access
+
+To access index 1000:
+
+Must traverse nodes one by one.
+
+Time:
+
+O(n)
+list.get(1000)
+❌ More memory usage
+
+Extra pointers in every node.
+
+❌ Poor cache locality
+
+Nodes scattered in memory.
+
+Time Complexity Comparison
+Operation	Array	ArrayList	LinkedList
+Access by index	O(1)	O(1)	O(n)
+Insert at end	O(1)*	O(1) amortized	O(1)
+Insert at middle	O(n)	O(n)	O(1)**
+Delete at middle	O(n)	O(n)	O(1)**
+Memory usage	Low	Medium	High
+Dynamic size	❌	✅	✅
+
+* if space exists
+** if node reference already available
+
+Real-world usage
+Use Array when:
+Fixed size known
+Maximum performance needed
+Heavy index access
+
+Example:
+
+Matrix
+DP problems
+Frequency arrays
+Use ArrayList when:
+Mostly reading/accessing
+Dynamic size needed
+Most common choice
+
+Example:
+
+LeetCode
+API responses
+General collections
+Use LinkedList when:
+Frequent insert/delete at ends
+Implement queue/deque
+Continuous modifications
+
+Example:
+
+Browser history
+LRU cache internals
+Undo/redo systems
+Important Interview Point
+
+In real Java applications:
+
+✅ ArrayList is used MUCH more often than LinkedList.
+
+Because:
+
+cache friendly
+better practical performance
+modern CPUs favor arrays heavily
+
+Even though LinkedList has theoretical insertion advantage, traversal cost usually dominates.
+
+Quick intuition:
+
+Array → fixed + fastest
+ArrayList → flexible + practical
+LinkedList → insertion/deletion specialized
