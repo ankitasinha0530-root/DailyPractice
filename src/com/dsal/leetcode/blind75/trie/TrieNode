@@ -1,0 +1,689 @@
+The root node of a Trie usually does not represent any character.
+
+A trie, also known as a prefix tree,
+It is a tree-like data structure used to store a dynamic set of strings where the keys are usually strings.
+It is particularly efficient for tasks like prefix searching and string lookups.
+
+Think of it as an empty starting node.
+
+Example, insert:
+
+cat
+car
+dog
+
+Trie:
+
+(root)
+   |
+   c
+   |
+   a
+  / \
+ t   r
+
+(root)
+   |
+   d
+   |
+   o
+   |
+   g
+
+More accurately:
+
+            root
+          /      \
+         c        d
+         |        |
+         a        o
+       /   \      |
+      t     r     g
+
+Typical node:
+
+class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    boolean isWord;
+}
+
+
+                 root
+               /      \
+              c        d
+              |        |
+              a        o
+           /  |  \      |
+          t* r* p*     g*
+
+Remember:
+
+Root:
+- Empty node
+- No character
+- Holds references to first letters
+
+Each node:
+- children[]
+- isEndOfWord
+
+Each path:
+- Represents a prefix
+
+Leaf/end node:
+- Marks a complete word
+
+Root:
+
+TrieNode root = new TrieNode();
+
+Notice:
+
+root.isWord == false
+
+and
+
+root
+
+stores no character.
+
+When inserting "cat":
+
+curr = root;
+
+c
+a
+t
+
+You start from root and create children.
+
+Some implementations store a character:
+
+class TrieNode {
+    char ch;
+    Map<Character, TrieNode> children;
+}
+
+Then root is often initialized as:
+
+new TrieNode('\0');
+
+or
+
+new TrieNode('*');
+
+or
+
+new TrieNode(' ');
+
+But that's just a placeholder.
+
+Conceptually:
+
+Root = Empty Node
+
+not a real character.
+
+For interviews, remember:
+
+Root does not represent a character.
+It is just the starting point of all words.
+give me the theory of trie starting from root node and everything, and root keeps reference of children
+
+Think of a Trie as a tree where:
+
+Each node = one character
+Each path = one word/prefix
+
+The biggest idea:
+
+Common prefixes are shared.
+
+1. Root Node
+
+The root is a special empty node.
+
+TrieNode root = new TrieNode();
+
+It does not represent any character.
+
+          root
+
+The root's job is to hold references to the first characters of all words.
+
+If we insert:
+
+cat
+car
+dog
+
+Root will have:
+
+          root
+         /    \
+        c      d
+
+So yes:
+
+Root keeps references to its children.
+
+2. Trie Node Structure
+
+Most common implementation:
+
+class TrieNode {
+
+    TrieNode[] children = new TrieNode[26];
+
+    boolean isEndOfWord;
+}
+
+Each node stores:
+
+children[0] -> a
+children[1] -> b
+children[2] -> c
+...
+children[25] -> z
+
+and
+
+isEndOfWord
+
+which tells us whether a complete word ends here.
+
+3. Insert "cat"
+
+Start:
+
+root
+
+Insert 'c'
+
+root
+  |
+  c
+
+Insert 'a'
+
+root
+  |
+  c
+  |
+  a
+
+Insert 't'
+
+root
+  |
+  c
+  |
+  a
+  |
+  t*
+
+* means:
+
+isEndOfWord = true
+4. Insert "car"
+
+We already have:
+
+root
+  |
+  c
+  |
+  a
+  |
+  t*
+
+Reuse existing prefix:
+
+root
+  |
+  c
+  |
+  a
+ / \
+t*  r*
+
+Notice:
+
+c
+a
+
+are shared.
+
+Only r is new.
+
+5. Insert "dog"
+           root
+         /      \
+        c        d
+        |        |
+        a        o
+      /   \      |
+     t*   r*     g*
+6. How Search Works
+
+Search:
+
+car
+
+Start:
+
+curr = root;
+
+Look for:
+
+c
+
+Move:
+
+root -> c
+
+Look for:
+
+a
+
+Move:
+
+c -> a
+
+Look for:
+
+r
+
+Move:
+
+a -> r
+
+Check:
+
+isEndOfWord == true
+
+Return:
+
+true
+7. Why isEndOfWord Needed?
+
+Suppose only:
+
+cat
+
+exists.
+
+Trie:
+
+root
+ |
+ c
+ |
+ a
+ |
+ t*
+
+Search:
+
+ca
+
+Traversal succeeds:
+
+root -> c -> a
+
+But:
+
+isEndOfWord == false
+
+Therefore:
+
+ca is not a word
+
+Only a prefix.
+
+8. Prefix Search
+
+Search:
+
+ca
+
+Question:
+
+Does any word start with "ca"?
+
+Traverse:
+
+root -> c -> a
+
+Success.
+
+Return:
+
+true
+
+No need to check isEndOfWord.
+
+9. Why Trie is Fast
+
+Words:
+
+apple
+application
+apply
+app
+
+HashMap stores:
+
+apple
+application
+apply
+app
+
+separately.
+
+Trie stores:
+
+root
+ |
+ a
+ |
+ p
+ |
+ p*
+ |
+ l
+ |
+ ...
+
+Shared prefix:
+
+app
+
+is stored once.
+
+10. Mental Model for Interviews
+
+Imagine every node asks:
+
+What letters can come next?
+
+Example:
+
+cat
+car
+cap
+
+Node 'a' contains:
+
+children:
+t
+r
+p
+
+because after "ca" we can have:
+
+cat
+car
+cap
+Complete Picture
+Insert:
+
+cat
+car
+cap
+dog
+
+so basically each node keeps a refernce of next word right
+
+Almost.
+
+A Trie node keeps references to the next possible characters, not the next word.
+
+For example, if we insert:
+
+cat
+car
+cap
+
+The node for 'a' looks like:
+
+      a
+    / | \
+   t  r  p
+
+So node 'a' keeps references to:
+
+'t'
+'r'
+'p'
+
+because after "ca" the next character could be:
+
+cat
+car
+cap
+
+Think of each node as:
+
+class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    boolean isEndOfWord;
+}
+
+A node doesn't store:
+
+next word
+
+It stores:
+
+all possible next characters
+
+Example:
+
+dog
+door
+dot
+
+Trie:
+
+root
+ |
+ d
+ |
+ o
+/|\
+g t o
+     |
+     r
+
+Node 'o' has references to:
+
+g
+t
+o
+
+because after "do" we can continue with:
+
+dog
+dot
+doo...
+
+The mental model I use:
+
+Each node answers:
+
+"What characters can come next?"
+
+Root answers:
+
+"What can be the first character of a word?"
+
+Node 'c' answers:
+
+"What can come after c?"
+
+Node 'a' answers:
+
+"What can come after ca?"
+
+So yes, nodes keep references, but the references are to next character nodes, not entire words.
+The complete word is represented by the path from root to a node whose isEndOfWord = true.
+
+so isEndOfword can be at do dog at o and g
+
+Exactly! ✅
+
+Suppose you insert both:
+
+do
+dog
+
+Trie:
+
+root
+ |
+ d
+ |
+ o*
+ |
+ g*
+
+The * means:
+
+isEndOfWord = true
+
+So:
+
+Node 'o'
+
+Represents:
+
+do
+
+Therefore:
+
+o.isEndOfWord = true;
+
+because "do" is a complete word.
+
+Node 'g'
+
+Represents:
+
+dog
+
+Therefore:
+
+g.isEndOfWord = true;
+
+because "dog" is also a complete word.
+
+Why do we need this?
+
+If you search:
+
+do
+
+Traversal:
+
+root -> d -> o
+
+and:
+
+o.isEndOfWord == true
+
+Return:
+
+true
+
+If you search:
+
+dog
+
+Traversal:
+
+root -> d -> o -> g
+
+and:
+
+g.isEndOfWord == true
+
+Return:
+
+true
+
+Now suppose only "dog" was inserted.
+
+Trie:
+
+root
+ |
+ d
+ |
+ o
+ |
+ g*
+
+Notice:
+
+o.isEndOfWord == false
+
+Search "do":
+
+root -> d -> o
+
+Traversal succeeds, but:
+
+isEndOfWord == false
+
+So:
+
+"do" is not a word
+
+It's only a prefix of "dog".
+
+This is one of the most important Trie concepts:
+
+A node can be:
+✓ a complete word
+✓ a prefix of a longer word
+✓ both at the same time
+
+Example:
+
+a
+an
+and
+android
+
+Trie:
+
+a*
+ \
+  n*
+   \
+    d*
+      \
+       r
+        \
+         o
+          \
+           i
+            \
+             d*
+
+Here:
+
+a.isEndOfWord       = true
+n.isEndOfWord       = true
+d.isEndOfWord       = true
+last d.isEndOfWord  = true
+
+because all of these are valid words:
+
+a
+an
+and
+android
+
+while also serving as prefixes for longer words. That's the power of a Trie. 🚀
