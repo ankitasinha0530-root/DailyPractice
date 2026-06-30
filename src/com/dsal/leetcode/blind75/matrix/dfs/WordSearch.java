@@ -1,4 +1,4 @@
-package com.dsal.leetcode.blind75.graph;
+package com.dsal.leetcode.blind75.matrix.dfs;
 
 public class WordSearch {
 

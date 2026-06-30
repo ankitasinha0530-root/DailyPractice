@@ -1,0 +1,105 @@
+
+In simple language, a graph is a collection of dots (called vertices) connected by lines (called edges).
+These dots represent objects, and the lines represent relationships between those objects.
+
+Network based
+
+Adjacency Matrix - Always use Adjacency Matrix when number of vertices are less than 10,000
+
+Adjacency List - ArrayList of Edges
+
+
+
+Graphs are used to model various real-world scenarios, like social networks, road networks,
+or connections between computers.
+They are essential in solving problems involving connections and dependencies between different elements.
+
+Definitions and Terminology:
+1. Vertices (Nodes): These are the individual elements or entities in the graph.
+    Each vertex can hold data associated with it, known as the vertex's "payload."
+2. Edges: These are the connections or relationships between pairs of vertices.
+    An edge connects two vertices and may have an optional weight or cost associated with it, representing some quantitative value or distance.
+3. Path: Path is a sequence of vertices connected by edges, which allows you to move from one vertex to another in the graph.
+    It represents a route or a series of steps that you can take to traverse the graph from a starting vertex to an ending vertex, passing through intermediate vertices (if any) along the way.
+4. Edge Weight: Edge weight refers to a numerical value assigned to an edge in a weighted graph.
+    Weighted graphs are graphs where each edge has an associated weight or cost
+5. Degree: The degree of a vertex in a graph is a measure of the number of edges incident to that vertex.
+    In other words, it tells us how many edges are connected to a specific vertex.
+
+Key points about vertex degree:
+	1. Degree of a Vertex: For an undirected graph, the degree of a vertex is the count of edges connected to that vertex.
+	    In a directed graph, the degree of a vertex is the sum of its in-degree (incoming edges) and out-degree (outgoing edges).
+	2. In-Degree: In a directed graph, the in-degree of a vertex is the number of incoming edges directed towards that vertex.
+	3. Out-Degree: In a directed graph, the out-degree of a vertex is the number of outgoing edges from that vertex.
+	4. Self-Loop: If there is an edge connecting a vertex to itself (self-loop), it is counted as one of the incident edges,
+	    contributing to the degree of that vertex.
+	5. Isolated Vertex: A vertex with a degree of 0 is called an isolated vertex, meaning it has no edges incident to it.
+
+
+Types Of Graphs:
+Graphs can be classified into various types based on their properties and characteristics. Here are some of the most common types of graphs:
+1. Undirected Graph: In an undirected graph, the edges have no direction,
+    meaning the connection between vertices is bidirectional. If there is an edge between vertex A and vertex B, you can traverse it in both directions, from A to B and from B to A.
+2. Directed Graph: In a directed graph, each edge has a direction associated with it.
+    This means that the relationship between two vertices is one-way.
+    If there is a directed edge from vertex A to vertex B, you can only traverse it from A to B and not vice versa.
+3. Weighted Graph: A graph in which each edge has an associated weight or cost,
+    typically representing some numerical value, distance, or cost.
+4. Unweighted Graph: A graph in which all edges have the same weight, usually considered to be 1.
+    The specific weights are not significant in this type of graph.
+6. Cyclic Graph: A graph that contains at least one cycle, which is a closed path that starts and ends at the same vertex,
+    passing through one or more vertices.
+7. Acyclic Graph: A graph that does not contain any cycles.
+    It is a special type of graph with no closed loops.
+8. Connected Graph: A graph where there is a path between every pair of vertices.
+    All vertices are reachable from any other vertex through a sequence of edges.
+9. Disconnected Graph: A graph that contains multiple connected components,
+    where some vertices are not reachable from others.
+
+Graph Representation:
+There are two common ways to represent a graph:
+
+1. Adjacency Matrix: In this representation, a 2D matrix is used to show the connections between nodes.
+    The rows and columns of the matrix correspond to the nodes in the graph, and the value in the matrix cell represents whether there is an edge between the nodes or not. Typically, a 1 indicates an edge, while a 0 indicates no edge.
+
+Example: Four nodes (A, B, C, D) and five edges (AB, AC, AD, BC, CD):
+
+   A  B  C  D
+A  0  1  1  1
+B  1  0  1  0
+C  1  1  0  1
+D  1  0  1  0
+For directed graphs, the matrix may not be symmetric since the edge from node i to node j might be different
+from the edge from node j to node i.
+
+2. Adjacency List: In this representation, each node in the graph has a list of its neighboring nodes.
+    It can be implemented using an array or a dictionary where the keys are the nodes,
+    and the associated values are lists containing the neighboring nodes.
+    Example of an undirected graph with four nodes (A, B, C, D) and five edges (AB, AC, AD, BC, CD):
+
+Breadth First Search (BFS):
+
+Algorithm:
+    1. Pick a starting node push it into the queue, mark it as visited.
+    2. In every iteration, pop out the 'x' node and put it in the solution vector.
+    3. All the unvisited adjacent nodes from 'x' are pushed into the queue.
+    4. Repeat steps 2 and 3.
+
+BFS :-
+    1. Start with an initial node as the current node.
+    2. Mark the current node as visited to keep track of the nodes already explored.
+    3. Process the current node (e.g., print its value or perform any desired operation).
+    4. Find an unvisited neighboring node of the current node and make it the new current node.
+    5. If all neighboring nodes are visited, backtrack to the previous node (pop it from the stack if using an explicit stack).
+    6. Repeat steps 2 to 5 until there are no more unvisited nodes.
+
+Lets Begin With Some Popular Problems:-
+
+    1. Number of Provinces
+    2. Rotten Oranges : Min time to rot all oranges : BFS
+    3. Flood Fill Algorithm
+    4. Distance of Nearest Cell having 1
+    5. Surrounded Regions | Replace O's with X's
+    6. Number of Enclaves
+    7. Number of Islands
+    8. Bipartite Graph
