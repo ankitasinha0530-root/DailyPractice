@@ -1,0 +1,383 @@
+
+
+Prim's vs Dijkstra (Side by Side)
+
+Use this graph:
+
+      100
+   A ------- B
+   |         |
+  40        40
+   |         |
+   C ------- D
+       40
+What is each algorithm trying to optimize?
+Dijkstra	Prim's
+Shortest distance from source A to every vertex	Minimum total cost to connect all vertices
+Thinks about paths	Thinks about a tree
+Source matters	Source doesn't matter
+The question being asked
+Dijkstra
+"What is the cheapest way to reach B from A?"
+"What is the cheapest way to reach C from A?"
+"What is the cheapest way to reach D from A?"
+Prim's
+"How can I connect A, B, C, D
+with the minimum total edge cost?"
+What does the PQ entry mean?
+Dijkstra
+(vertex, distanceFromSource)
+
+Example:
+
+(B, 100)
+
+means:
+
+Shortest known distance from A to B is 100.
+Prim's
+(vertex, edgeWeight)
+
+Example:
+
+(B, 40)
+
+means:
+
+I can connect B to my current tree
+using an edge of weight 40.
+
+Notice:
+
+Nothing about distance from A.
+What gets minimized?
+Dijkstra
+dist[v]
+
+Distance from source to every vertex.
+
+Final:
+
+dist[A]=0
+dist[C]=40
+dist[D]=80
+dist[B]=100
+
+because:
+
+A -> B = 100
+A -> C -> D -> B = 120
+
+Choose 100.
+
+Prim's
+
+Minimize:
+
+sum of all edges in the tree
+
+Choose:
+
+A-C = 40
+C-D = 40
+D-B = 40
+
+Tree cost:
+
+40 + 40 + 40 = 120
+Important observation
+Distance from A to B inside MST
+A -> C -> D -> B = 120
+
+But shortest path is:
+
+A -> B = 100
+
+Prim's is completely okay with this!
+
+Why?
+
+Because Prim's says:
+
+I don't care that A to B became 120.
+
+I only care that the entire tree cost is minimum.
+
+Dijkstra says:
+
+I don't care about the total cost of connecting everyone.
+
+I only care about the shortest path from A.
+Update formula
+Dijkstra
+if (dist[u] + wt < dist[v]) {
+    dist[v] = dist[u] + wt;
+}
+
+Because reaching v depends on:
+
+distance to u + edge(u,v)
+Prim's
+if (wt < key[v]) {
+    key[v] = wt;
+}
+
+Because connecting v only depends on:
+
+the cheapest edge entering v
+One sentence summary
+Dijkstra	Prim's
+Minimize distance from source to each vertex.	Minimize total cost of the spanning tree.
+Path problem	Tree problem
+Source-centric	Graph-centric
+The mental model
+Dijkstra:
+"How do I travel from A to everyone cheaply?"
+
+Prim's:
+"How do I connect everyone cheaply?"
+
+That one distinction is the entire difference between the two algorithms.
+Exactly! 💯
+
+A spanning tree has one job:
+
+Connect all vertices using exactly V - 1 edges and without cycles.
+
+Prim's is trying to minimize:
+
+sum of all edges in the tree
+
+while making sure:
+
+every vertex is included exactly once in the connected tree.
+
+In your example:
+
+      100
+   A ------- B
+   |         |
+  40        40
+   |         |
+   C ------- D
+       40
+
+If we choose the direct edge:
+
+A-B = 100
+
+we still need to connect C and D, so the tree costs:
+
+100 + 40 + 40 = 180
+
+Instead, if we avoid the expensive 100 edge:
+
+A-C = 40
+C-D = 40
+D-B = 40
+
+we get:
+
+40 + 40 + 40 = 120
+
+which is smaller.
+
+The important realization is:
+
+Shortest path from A to B = 100
+Distance from A to B in MST = 120
+
+and that's perfectly okay because the MST is not trying to minimize A → B.
+
+It's trying to minimize:
+
+Cost of connecting {A, B, C, D} together.
+
+This is the sentence I use to remember it:
+
+Dijkstra thinks locally about one source and all destinations.
+
+Prim's thinks globally about connecting the entire graph as cheaply as possible.
+
+now what about dijstra..
+
+Now let's think from Dijkstra's perspective on the same graph:
+
+      100
+   A ------- B
+   |         |
+  40        40
+   |         |
+   C ------- D
+       40
+
+Source = A.
+
+Initially
+dist[A] = 0
+dist[B] = ∞
+dist[C] = ∞
+dist[D] = ∞
+
+PQ:
+
+(A,0)
+Step 1
+
+Process A.
+
+Neighbors:
+
+B = 100
+C = 40
+
+Update:
+
+dist = [0,100,40,∞]
+
+PQ:
+
+(C,40), (B,100)
+Step 2
+
+Process C (smallest distance).
+
+Neighbor:
+
+D = 40 + 40 = 80
+
+Update:
+
+dist = [0,100,40,80]
+
+PQ:
+
+(D,80), (B,100)
+Step 3
+
+Process D.
+
+Can we improve B?
+
+A -> C -> D -> B
+= 40 + 40 + 40
+= 120
+
+Current:
+
+dist[B] = 100
+
+Since:
+
+120 > 100
+
+we do nothing.
+
+Final distances
+A -> A = 0
+A -> C = 40
+A -> D = 80
+A -> B = 100
+Why?
+
+Because Dijkstra asks:
+
+"For each vertex, what is the cheapest path from A to that vertex?"
+
+For B, it compares:
+
+Direct:
+A -> B = 100
+
+vs
+
+Through others:
+A -> C -> D -> B = 120
+
+and keeps:
+
+100
+Compare with Prim's
+Prim's
+A-C = 40
+C-D = 40
+D-B = 40
+Total tree cost = 120
+
+Distance from A to B inside the MST:
+
+120
+Dijkstra
+Shortest distance(A,B) = 100
+The fundamental difference
+Dijkstra says:
+I don't care about the cost of connecting everybody.
+I only care about the cheapest way to reach each vertex from A.
+Prim's says:
+I don't care if some source-to-destination distances become larger.
+I only care about the minimum total cost of the entire tree.
+
+That's the exact philosophical difference between the two algorithms.
+
+dijkstra  is about distance of each vertex from source ?
+
+Yes, exactly. 🎯
+
+Dijkstra's algorithm is fundamentally about:
+
+Finding the shortest distance from one source vertex to every other vertex.
+
+If the source is A, then it computes:
+
+dist[A] = shortest distance from A to A
+dist[B] = shortest distance from A to B
+dist[C] = shortest distance from A to C
+dist[D] = shortest distance from A to D
+...
+
+For example:
+
+      100
+   A ------- B
+   |         |
+  40        40
+   |         |
+   C ------- D
+       40
+
+Source = A
+
+Then:
+
+dist[A] = 0
+dist[C] = 40
+dist[D] = 80      (A -> C -> D)
+dist[B] = 100     (direct edge)
+
+because:
+
+A -> C -> D -> B = 120
+
+is worse than:
+
+A -> B = 100
+Think of dist[] as:
+dist[v]
+
+means:
+
+"What is the cheapest possible cost to reach v starting from my source?"
+
+That's why the relaxation is:
+if (dist[u] + wt < dist[v]) {
+    dist[v] = dist[u] + wt;
+}
+
+because to reach v, you first have to reach u, and then take the edge u → v.
+
+One-line memory trick
+Dijkstra  → shortest distance FROM ONE SOURCE to every vertex.
+
+Prim's    → minimum cost TO CONNECT all vertices.
+
+That's the exact distinction.
